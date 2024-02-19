@@ -1,0 +1,56 @@
+version: '3.8'
+services:
+    caddy:
+        container_name: caddy
+        build:
+            context: .
+            dockerfile: ./caddy/Dockerfile
+            args:
+                DOMAIN: ${DOMAIN}
+                EMAIL: ${EMAIL}
+                DOLLAR: ${DOLLAR}
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+          - ./caddy:/home/
+          - ./coder/next_app/.next/static:/home/coder/next_app/.next/static
+        env_file:
+          - .env
+
+    pocketbase:
+        container_name: pocketbase
+        build:
+            context: .
+            dockerfile: ./pocketbase/Dockerfile
+            args:
+                PB_VERSION: ${PB_VERSION}
+        depends_on:
+            - caddy
+        ports:
+            - "8090:8090"
+        env_file:
+            - .env
+        volumes:
+            - ./pocketbase/pb_data:/home/pocketbase/pb_data
+
+    code-server:
+        container_name: code-server
+        build:
+            context: .
+            dockerfile: ./code-server/Dockerfile
+            args:
+                CERT: ${CERT}
+                CERT_KEY: ${CERT_KEY}
+                password: ${PASSWORD}
+        depends_on:
+            - caddy
+        ports:
+            - "8080:8080"
+            - "3000:3000"
+        env_file:
+            - .env
+        volumes:
+            - ./caddy/data/caddy/autosave.json:/data/caddy/autosave.json
+            - ./coder/:/home/coder
+

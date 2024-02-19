@@ -1,0 +1,19 @@
+{
+        debug
+}
+
+$DOMAIN/code/* {
+    uri strip_prefix /code
+    reverse_proxy code-server:8080
+}
+
+$DOMAIN {
+    request_body {
+        max_size 10MB
+    }
+    reverse_proxy pocketbase:8090 {
+        transport http {
+            read_timeout 360s
+        }
+    }
+}
