@@ -1,7 +1,7 @@
 # 프로젝트 개요 🚀
 
-클라우드 환경에 최적화된 도커 기반의 프로젝트 구조입니다.  
-<sub><sup>This project is structured for an optimized Docker-based deployment in cloud environments.</sup></sub>
+이 프로젝트는 클라우드 환경에서 도커화시킨 구조입니다.
+<sub><sup>This project is structured for an Docker-based deployment in cloud environments.</sup></sub>
 
 ![아키텍처 다이어그램](/structure.png)
 세 가지 주요 서비스로 구성되어 있습니다:
