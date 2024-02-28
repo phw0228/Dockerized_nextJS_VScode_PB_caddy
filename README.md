@@ -50,4 +50,5 @@ CERT_KEY="/data/caddy/certificates/acme.zerossl.com-v2-dv90/${DOMAIN}/${DOMAIN}.
 <sub><sup>For enhanced security, it is recommended to set puid and pgid variables for file permissions consistency and configure volumes appropriately.</sup></sub>
 
 보안을 강화하거나 유용한 기능을 추가 및 수정해주시면 감사하겠습니다.
+
 <sub><sup>Enhance security or add and modify useful features as needed.</sup></sub>
