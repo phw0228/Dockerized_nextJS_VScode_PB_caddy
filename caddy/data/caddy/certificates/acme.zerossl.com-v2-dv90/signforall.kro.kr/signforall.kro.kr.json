@@ -1,0 +1,9 @@
+{
+	"sans": [
+		"signforall.kro.kr"
+	],
+	"issuer_data": {
+		"url": "https://acme.zerossl.com/v2/DV90/cert/3FEl7mztiktlPImKEXK1wQ",
+		"ca": "https://acme.zerossl.com/v2/DV90"
+	}
+}

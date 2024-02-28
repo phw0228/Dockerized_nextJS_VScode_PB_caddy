@@ -7,11 +7,9 @@ RUN apk add --no-cache vim
 # ARG 정의
 ARG DOMAIN
 ARG EMAIL
-ARG DOLLAR
 
 ENV DOMAIN=$DOMAIN
-ENV EMAIL=$EMAIL
-ENV DOLLAR=$DOLLAR
+ENV ACME_EMAIL=$EMAIL
 
 # 사용자 정의 Caddyfile 설정 파일 복사
 COPY caddy/Caddyfile.temp /etc/caddy/Caddyfile.temp
@@ -24,12 +22,3 @@ WORKDIR /etc/caddy
 
 # Caddy 실행
 CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
-
-
-# 시작 스크립트 복사 (환경 변수 치환을 수행)
-# COPY caddy/entrypoint.sh /entrypoint.sh
-
-# 실행 권한 부여
-# RUN chmod +x /entrypoint.sh
-
-#ENTRYPOINT /entrypoint.sh $DOMAIN $EMAIL

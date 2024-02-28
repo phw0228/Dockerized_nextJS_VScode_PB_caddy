@@ -1,0 +1,9 @@
+{
+    "workbench.colorTheme": "Default High Contrast",
+    "workbench.iconTheme": "simple-icons",
+    "tabnine.experimentalAutoImports": true,
+    "workbench.settings.applyToAllProfiles": [],
+    "files.associations": {
+      "*.css": "tailwindcss"
+    }
+}

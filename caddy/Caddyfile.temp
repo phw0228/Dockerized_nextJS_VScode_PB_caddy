@@ -1,19 +1,43 @@
-{
-        debug
-}
-
-$DOMAIN/code/* {
-    uri strip_prefix /code
-    reverse_proxy code-server:8080
-}
-
 $DOMAIN {
-    request_body {
-        max_size 10MB
+    log {
+        output file /var/log/caddy/access.log
+        format json
     }
-    reverse_proxy pocketbase:8090 {
-        transport http {
-            read_timeout 360s
+    
+    # 모든 요청에 대한 CORS 헤더 추가
+    header {
+        Access-Control-Allow-Origin * # https://$DOMAIN
+        Access-Control-Allow-Methods "GET, POST, OPTIONS, DELETE, PUT"
+        Access-Control-Allow-Headers "DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization"
+        Access-Control-Expose-Headers "Content-Length,Content-Range"
+    }
+
+    # OPTIONS 메소드에 대한 특별 처리
+    @options method OPTIONS
+    handle @options {
+        respond 204
+    }
+
+	handle /public/* {
+        root * /home/ubuntu/app/next-app  # 정적 파일의 루트 디렉토리 지정
+        file_server {
+            hide .git
         }
     }
+
+    # 개발 서버 리버스 프록시 설정
+    handle_path /dev/* {
+        reverse_proxy next-app:3000
+    }
+
+    # code-server 리버스 프록시 설정
+    handle_path /code/* {
+        reverse_proxy code-server:8080
+    }
+
+    # pocketbase 리버스 프록시 설정
+    handle_path /pb/* {
+        reverse_proxy pocketbase:8090
+    }
 }
+

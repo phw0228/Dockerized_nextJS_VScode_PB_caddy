@@ -8,13 +8,14 @@ services:
             args:
                 DOMAIN: ${DOMAIN}
                 EMAIL: ${EMAIL}
-                DOLLAR: ${DOLLAR}
         ports:
             - "80:80"
             - "443:443"
         volumes:
-          - ./caddy:/home/
-          - ./coder/next_app/.next/static:/home/coder/next_app/.next/static
+          - ./caddy/data:/data #cert path
+          - ./caddy/config:/config
+          - ./caddy/logs:/var/log/caddy
+          - ./app:/home/app
         env_file:
           - .env
 
@@ -47,10 +48,19 @@ services:
             - caddy
         ports:
             - "8080:8080"
-            - "3000:3000"
         env_file:
             - .env
         volumes:
-            - ./caddy/data/caddy/autosave.json:/data/caddy/autosave.json
-            - ./coder/:/home/coder
+            - ./caddy/data:/data
+            - ./app:/home/app
 
+    next-app:
+        container_name: next-app 
+        build:
+            context: .
+            dockerfile: ./app/Dockerfile
+        ports:
+            - "3000:3000"
+        volumes:
+            - ./app/next-app:/usr/src/app
+        command: npm run dev

@@ -7,8 +7,8 @@ if [ -z "$DOMAIN" ]; then
 fi
 
 # SSL/TLS 인증서 경로 설정
-CERT="/etc/letsencrypt/live/${DOMAIN}/fullchain.pem"
-CERT_KEY="/etc/letsencrypt/live/${DOMAIN}/privkey.pem"
+CERT="/data/caddy/certificates/acme.zerossl.com-v2-dv90/${DOMAIN}/${DOMAIN}.crt"
+CERT_KEY="/data/caddy/certificates/acme.zerossl.com-v2-dv90/${DOMAIN}/${DOMAIN}.key"
 
 # /config 디렉토리가 없으면 생성
 if [ ! -d "/config" ]; then
@@ -24,16 +24,9 @@ if [ ! -f "/config/config.yaml" ]; then
     echo "cert-key: \"$CERT_KEY\"" >> /config/config.yaml
 fi
 
-# React 앱 경로로 이동
-cd /home/coder/next_app
-# npm 의존성 설치
-npm install
-
-cd /home/coder/react_app
-npm install
-
-# React 개발 서버를 백그라운드에서 시작
-#npm start HOST=0.0.0.0 &
+# 작업 디렉토리로 이동
+cd /home/app
 
 # code-server 시작
-exec /usr/bin/entrypoint.sh --bind-addr "0.0.0.0:8080" /home/coder "$@"
+exec /usr/bin/entrypoint.sh --bind-addr "0.0.0.0:8080" "$@"
+
